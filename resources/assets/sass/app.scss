@@ -1,0 +1,70 @@
+
+// Fonts
+@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
+
+// Variables
+@import "variables";
+$greytext: rgb(226, 226, 226);
+$greentext: rgb(1, 209, 178);
+// Bootstrap
+body {
+	font: {
+		family: Helvetica Neue;
+		weight: 300;
+		color: $greytext;
+	}
+}
+.nav {
+	background-color: black;
+	a {
+		color: $greytext;
+		padding-right: 30px;
+		&:hover {
+			color: $greentext;
+		}
+	}
+	img {
+		width: 100%;
+	}
+}
+
+.mainbody {
+	background-image: url('http://i.imgur.com/HSbrQsb.jpg');
+	background-position: center center;
+	repeat: no-repeat;
+	-webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 500px;
+    width: 100%;
+    text-align: center;
+}
+$body-bg: transparent;
+
+.button-start {
+	background-color: transparent;
+	color: white;
+	border-radius: 0;
+	margin-top: 390px;
+}
+
+.stats-bar {
+	margin-top: 26px;
+}
+
+.bracket-box {
+	margin-top: 25%;
+}
+
+.bracket-box-winner {
+	margin-top: 50%;
+}
+
+.method {
+	font-size: 12px;
+}
+
+#round2fight1, #round2fight2 {
+	display: none;
+}
