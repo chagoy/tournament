@@ -144,7 +144,7 @@
 		<!-- ROUND 2 -->
 		<div class="column is-one-quarter">
 			<h1 class="title">Round 2</h1>
-			<!-- START OF R2 - 1v3 -->
+			<!-- START OF R2 - 1v4 -->
 			<!-- R2 S1 -->
 			<div class="box bracket-box">
 				<article class="media">
@@ -159,22 +159,22 @@
 					</div>
 				</article>
 			</div>
-			<!-- R2 S3 -->
+			<!-- R2 S4 -->
 			<div class="box bracket-box">
 				<article class="media">
 					<div class="media-left">
 						<figure class="image is-64x64">
-							<img id="round2seed3image" src="">
+							<img id="round2seed4image" src="">
 						</figure>
 					</div>
 					<div class="media-content">
-						<div class="content" id="round2seed3name"></div>
-							<p class="method" id="round2seed3method"></p>
+						<div class="content" id="round2seed4name"></div>
+							<p class="method" id="round2seed4method"></p>
 					</div>
 				</article>
 			</div>
-				<button id="round2fight1" class="button is-dark">Sim 1 vs 3</button>
-			<!-- ROUND 2 - 2v4-->
+				<button id="round2fight1" class="button is-dark hiddenElement">Sim 1 vs 3</button>
+			<!-- ROUND 2 - 2v3-->
 			<!-- R2 S2 -->
 			<div class="box bracket-box">
 				<article class="media">
@@ -190,21 +190,21 @@
 					</div>
 				</article>
 			</div>
-			<!-- R2 S4 -->
+			<!-- R2 S3 -->
 			<div class="box bracket-box">
 				<article class="media">
 					<div class="media-left">
 						<figure class="image is-64x64">
-							<img id="round2seed4image" src="">
+							<img id="round2seed3image" src="">
 						</figure>
 					</div>
 					<div class="media-content">
-						<div class="content" id="round2seed4name"></div>
-						<p class="method" id="round2seed4method"></p>
+						<div class="content" id="round2seed3name"></div>
+						<p class="method" id="round2seed3method"></p>
 					</div>
 				</article>
 			</div>
-				<button id="round2fight2" class="button is-dark">Sim 2 vs 4</button>
+				<button id="round2fight2" class="button is-dark hiddenElement">Sim 2 vs 4</button>
 		</div> <!-- END ROUND 2 -->
 		<div class="column is-one-quarter">
 			<h1 class="title">Round 3</h1>
@@ -237,7 +237,7 @@
 					</div>
 				</article>
 			</div>
-				<button id="finalmatch" class="button is-dark">Sim Final</button>
+				<button id="finalmatch" class="button is-dark hiddenElement">Sim Final</button>
 		</div>
 		<!-- WINNER -->
 		<div class="column is-one-quarter">

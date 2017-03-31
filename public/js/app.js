@@ -63,17 +63,407 @@
 /******/ 	__webpack_require__.p = "./";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 39);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
+/* WEBPACK VAR INJECTION */(function($) {/**
+ * First we will load all of this project's JavaScript dependencies which
+ * includes Vue and other libraries. It is a great starting point when
+ * building robust, powerful web applications using Vue and Laravel.
+ */
+__webpack_require__(35);
+/**
+ * Next, we will create a fresh Vue application instance and attach it to
+ * the page. Then, you may begin adding components to this application
+ * or customize the JavaScript scaffolding to fit your unique needs.
+ */
+Vue.component('example', __webpack_require__(38));
+
+var app = new Vue({
+    el: '#app'
+});
+
+//DECLARE ALL THE VARIABLES 
+var winner = ''; //obviously the winner after function is run
+var winnerimage = ''; //images winner
+var winnermethod = ''; //stores the score cards or whatever other results
+var acard = 0; //a-sides scorecard victories, used to determine who wins
+var bcard = 0; //b-sides scorecard victories, used to determine who wins
+var scores = []; //scores will be stored in an array
+var aknockdown = 0; //# of knockdowns A scores
+var bknockdown = 0; //# of knockdowns B scores
+var aknockout = 0; //determines if there is a KO
+var bknockout = 0; //determines if there is a KO
+var round = 1;
+//FUNCTION TO DETERMINE A WINNER
+function fight(a, b) {
+    //declares some variables
+    var around = 0; //# rounds rounds A wins
+    var bround = 0; //# of rounds B wins
+    //generate the random factor that will influence each fight
+    var ran = function ran() {
+        return Math.random() * 25 + 10;
+    };
+    //function to generate stats newly each round
+    function createRound(a, b) {
+        aoff = (a.power + a.speed + a.offense) * (a.stamina / 100) / 2 * ran() / 100;
+        boff = (b.power + b.speed + b.offense) * (b.stamina / 100) / 2 * ran() / 100;
+        adef = (a.defense * ran() + a.chin) / 100;
+        bdef = (b.defense * ran() + b.chin) / 100;
+        aovr = Math.round(aoff + adef);
+        bovr = Math.round(boff + bdef);
+    }
+    //this now sims each round and determines a winner
+    for (var i = 1; i <= 12; i++) {
+        createRound(a, b);
+        if (aovr >= bovr) {
+            around++;
+            if (aovr - bovr > 19 && b.chin < 63 && a.power > 63) {
+                aknockout++;
+                round = i;
+            }
+            if (aovr - bovr > 17 && a.power > 61 && b.chin < 64) {
+                aknockdown++;
+                b.chin - 3;
+                b.defense - 3;
+            }
+        } else {
+            bround++;
+            if (bovr - aovr > 19 && a.chin < 63 && b.power > 63) {
+                bknockout++;
+                round = i;
+            }
+            if (bovr - aovr > 17 && b.power > 61 && a.chin < 64) {
+                bknockdown++;
+                a.chin - 3;
+                a.defense - 3;
+            }
+        }
+    }
+    //determines a winner
+    if (120 - bround - bknockdown > 120 - around - aknockdown) {
+        acard++;
+    } else if (120 - bround - bknockdown < 120 - around - aknockdown) {
+        bcard++;
+    } else if (120 - bround - bknockdown === 120 - around - aknockdown) {
+        acard++;
+    }
+    //push the scorecards to a variable so they can be put in the div
+    scores.push(120 - bround - bknockdown + '-' + (120 - around - aknockdown));
+}
+
+function resetVariables() {
+    winnermethod = [];
+    scores = [];
+    acard = 0;
+    bcard = 0;
+    aknockout = 0;
+    bknockout = 0;
+    aknockdown = 0;
+    bknockdown = 0;
+    round = 1;
+}
+//the function which actually determines the winner
+function generateAWinner(a, b) {
+    for (var i = 0; i < 3; i++) {
+        fight(a, b);
+    }
+    if (acard > bcard) {
+        winner = a.name;
+        winnerimage = a.image;
+        winnermethod = scores.toString();
+    } else if (bcard > acard) {
+        winner = b.name;
+        winnerimage = b.image;
+        winnermethod = scores.toString();
+    } else {
+        winner = a.name;
+        winnerimage = a.image;
+        winnermethod = scores.toString();
+    }
+}
+
+//determine a winner of round 1 - #1 vs #8
+$("#round1fight1").on("click", function () {
+    if (boxers) {
+        generateAWinner(boxers[1], boxers[8]);
+        if (aknockout >= 1) {
+            $("#round2seed1image").attr("src", boxers[1].image);
+            document.getElementById("round2seed1name").innerText = boxers[1].name;
+            document.getElementById("round2seed1method").innerText = boxers[1].name + ' knocked out ' + boxers[8].name + ' in round ' + round;
+        } else if (bknockout >= 1) {
+            $("#round2seed1image").attr("src", boxers[8].image);
+            document.getElementById("round2seed1name").innerText = boxers[8].name;
+            document.getElementById("round2seed1method").innerText = boxers[8].name + ' knocked out ' + boxers[1].name + ' in round ' + round;
+        } else {
+            $("#round2seed1image").attr("src", winnerimage);
+            document.getElementById("round2seed1name").innerHTML = winner;
+            document.getElementById("round2seed1method").innerText = winnermethod;
+        }
+    }
+    if (boxers[1]["name"] == winner) {
+        round2seed1 = boxers[1];
+    } else {
+        round2seed1 = boxers[8];
+    }
+    winnermethod = [];
+    scores = [];
+    acard = 0;
+    bcard = 0;
+    aknockout = 0;
+    bknockout = 0;
+    aknockdown = 0;
+    bknockdown = 0;
+    round = 1;
+    $("#round1fight1").addClass("hiddenElement");
+    checkResults();
+});
+//determine a winner of round 1 - #2 vs #7
+$("#round1fight2").on("click", function () {
+    if (boxers) {
+        generateAWinner(boxers[2], boxers[7]);
+        if (aknockout >= 1) {
+            $("#round2seed2image").attr("src", boxers[2].image);
+            document.getElementById("round2seed2name").innerText = boxers[2].name;
+            document.getElementById("round2seed2method").innerText = boxers[2].name + ' knocked out ' + boxers[7].name + ' in round ' + round;
+        } else if (bknockout >= 1) {
+            $("#round2seed2image").attr("src", boxers[7].image);
+            document.getElementById("round2seed2name").innerText = boxers[7].name;
+            document.getElementById("round2seed2method").innerText = boxers[7].name + ' knocked out ' + boxers[2].name + ' in round ' + round;
+        } else {
+            $("#round2seed2image").attr("src", winnerimage);
+            document.getElementById("round2seed2name").innerHTML = winner;
+            document.getElementById("round2seed2method").innerText = winnermethod;
+        }
+    }
+    if (boxers[2]["name"] == winner) {
+        round2seed2 = boxers[2];
+    } else {
+        round2seed2 = boxers[7];
+    }
+    winnermethod = [];
+    scores = [];
+    acard = 0;
+    bcard = 0;
+    aknockout = 0;
+    bknockout = 0;
+    aknockdown = 0;
+    bknockdown = 0;
+    round = 1;
+    $("#round1fight2").addClass("hiddenElement");
+    checkResults();
+});
+//determine a winner of round 1 - #3 vs #6
+$("#round1fight3").on("click", function () {
+    if (boxers) {
+        generateAWinner(boxers[3], boxers[6]);
+        if (aknockout >= 1) {
+            $("#round2seed3image").attr("src", boxers[3].image);
+            document.getElementById("round2seed3name").innerText = boxers[3].name;
+            document.getElementById("round2seed3method").innerText = boxers[3].name + ' knocked out ' + boxers[6].name + ' in round ' + round;
+        } else if (bknockout >= 1) {
+            $("#round2seed3image").attr("src", boxers[6].image);
+            document.getElementById("round2seed3name").innerText = boxers[6].name;
+            document.getElementById("round2seed3method").innerText = boxers[6].name + ' knocked out ' + boxers[3].name + ' in round ' + round;
+        } else {
+            $("#round2seed3image").attr("src", winnerimage);
+            document.getElementById("round2seed3name").innerHTML = winner;
+            document.getElementById("round2seed3method").innerText = winnermethod;
+        }
+    }
+    if (boxers[3]["name"] == winner) {
+        round2seed3 = boxers[3];
+    } else {
+        round2seed3 = boxers[6];
+    }
+    winnermethod = [];
+    scores = [];
+    acard = 0;
+    bcard = 0;
+    aknockout = 0;
+    bknockout = 0;
+    aknockdown = 0;
+    bknockdown = 0;
+    round = 1;
+    $("#round1fight3").addClass("hiddenElement");
+    checkResults();
+});
+
+//determine a winner of roudn 1 - #4 vs #5
+$("#round1fight4").on("click", function () {
+    if (boxers) {
+        generateAWinner(boxers[4], boxers[5]);
+        if (aknockout >= 1) {
+            $("#round2seed4image").attr("src", boxers[4].image);
+            document.getElementById("round2seed4name").innerText = boxers[4].name;
+            document.getElementById("round2seed4method").innerText = boxers[4].name + ' knocked out ' + boxers[5].name + ' in round ' + round;
+        } else if (bknockout >= 1) {
+            $("#round2seed4image").attr("src", boxers[5].image);
+            document.getElementById("round2seed4name").innerText = boxers[5].name;
+            document.getElementById("round2seed4method").innerText = boxers[5].name + ' knocked out ' + boxers[4].name + ' in round ' + round;
+        } else {
+            $("#round2seed4image").attr("src", winnerimage);
+            document.getElementById("round2seed4name").innerHTML = winner;
+            document.getElementById("round2seed4method").innerText = winnermethod;
+        }
+    }
+    if (boxers[4]["name"] == winner) {
+        round2seed4 = boxers[4];
+    } else {
+        round2seed4 = boxers[5];
+    }
+    winnermethod = [];
+    scores = [];
+    acard = 0;
+    bcard = 0;
+    aknockout = 0;
+    bknockout = 0;
+    aknockdown = 0;
+    bknockdown = 0;
+    round = 1;
+    $("#round1fight4").addClass("hiddenElement");
+    checkResults();
+});
+
+//ROUND 2 BEGINS NOW
+//first we must add the buttons
+function checkResults() {
+    //check that all results have been generated from round 1
+    if ($("#round2seed1method").text().length > 0 && $("#round2seed2method").text().length > 0 && $("#round2seed3method").text().length > 0 && $("#round2seed4method").text().length > 0) {
+        //tells the buttons to pop up
+        $("#round2fight1").removeClass("hiddenElement");
+        $("#round2fight2").removeClass("hiddenElement");
+    }
+}
+
+function checkForFinal() {
+    if ($("#round3seed1method").text().length > 0 && $("#round3seed2method").text().length > 0) {
+        $("#finalmatch").removeClass("hiddenElement");
+    }
+}
+// 1 v 8 winner = round2seed1
+// 2 v 7 winner = round2seed2
+// 3 v 6 winner = round2seed3
+// 4 v 5 winner = round2seed4
+// therefore, round2seed1 vs round2seed4
+// and round2seed2 vs round2seed3 to determine the final
+$("#round2fight1").on("click", function () {
+    generateAWinner(round2seed1, round2seed4);
+    if (aknockout >= 1) {
+        $("#round3seed1image").attr("src", round2seed1.image);
+        document.getElementById("round3seed1name").innerText = round2seed1.name;
+        document.getElementById("round3seed1method").innerText = round3seed1.name + ' knocked out ' + round2seed4.name + ' in round ' + round;
+    } else if (bknockout >= 1) {
+        $("#round3seed1image").attr("src", round2seed4.image);
+        document.getElementById("round3seed1name").innerText = round2seed4.name;
+        document.getElementById("round3seed1method").innerText = round2seed4.name + ' knocked out ' + round2seed1.name + ' in round ' + round;
+    } else {
+        $("#round3seed1image").attr("src", winnerimage);
+        document.getElementById("round3seed1name").innerHTML = winner;
+        document.getElementById("round3seed1method").innerText = winnermethod;
+        if (round2seed1["name"] == winner) {
+            finalseed1 = round2seed1;
+        } else {
+            finalseed1 = round2seed4;
+        }
+    }
+    winnermethod = [];
+    scores = [];
+    acard = 0;
+    bcard = 0;
+    aknockdown = 0;
+    bknockdown = 0;
+    checkForFinal();
+    $("#round2fight1").addClass("hiddenElement");
+});
+$("#round2fight2").on("click", function () {
+    generateAWinner(round2seed2, round2seed3);
+    if (aknockout >= 1) {
+        $("#round3seed2image").attr("src", round2seed2.image);
+        document.getElementById("round3seed2name").innerText = round2seed2.name;
+        document.getElementById("round3seed2method").innerText = round2seed2.name + ' knocked out ' + round2seed3.name + ' in round ' + round;
+    } else if (bknockout >= 1) {
+        $("#round3seed2image").attr("src", round2seed3.image);
+        document.getElementById("round3seed2name").innerText = round2seed3.name;
+        document.getElementById("round3seed2method").innerText = round2seed3.name + ' knocked out ' + round2seed2.name + ' in round ' + round;
+    } else {
+        $("#round3seed2image").attr("src", winnerimage);
+        document.getElementById("round3seed2name").innerHTML = winner;
+        document.getElementById("round3seed2method").innerText = winnermethod;
+        if (round2seed2["name"] == winner) {
+            finalseed2 = round2seed2;
+        } else {
+            finalseed2 = round2seed3;
+        }
+    }
+    winnermethod = [];
+    scores = [];
+    acard = 0;
+    bcard = 0;
+    aknockdown = 0;
+    bknockdown = 0;
+    checkForFinal();
+    $("#round2fight2").addClass("hiddenElement");
+});
+$("#finalmatch").on("click", function () {
+    generateAWinner(finalseed1, finalseed2);
+    if (aknockout >= 1) {
+        $("#winnerimage").attr("src", finalseed1.image);
+        document.getElementById("winnername").innerText = finalseed1.name;
+        document.getElementById("winnermethod").innerText = finalseed1.name + ' knocked out ' + finalseed2.name + ' in round ' + round;
+    } else if (bknockout >= 1) {
+        $("#winnerimage").attr("src", finalseed2.image);
+        document.getElementById("winnername").innerText = finalseed2.name;
+        document.getElementById("winnermethod").innerText = finalseed2.name + ' knocked out ' + finalseed1.name + ' in round ' + round;
+    } else {
+        $("#winnerimage").attr("src", winnerimage);
+        document.getElementById("winnername").innerHTML = winner;
+        document.getElementById("winnermethod").innerText = winnermethod;
+        if (finalseed1["name"] == winner) {
+            thewinner = finalseed1;
+        } else {
+            thewinner = finalseed2;
+        }
+    }
+    winnermethod = [];
+    scores = [];
+    acard = 0;
+    bcard = 0;
+    aknockdown = 0;
+    bknockdown = 0;
+    $("#finalmatch").addClass("hiddenElement");
+});
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(0);
+module.exports = __webpack_require__(1);
+
+
+/***/ }),
+/* 3 */,
+/* 4 */,
+/* 5 */,
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 
 
-var bind = __webpack_require__(8);
+var bind = __webpack_require__(14);
 
 /*global toString:true*/
 
@@ -373,14 +763,14 @@ module.exports = {
 
 
 /***/ }),
-/* 1 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
-var utils = __webpack_require__(0);
-var normalizeHeaderName = __webpack_require__(27);
+var utils = __webpack_require__(6);
+var normalizeHeaderName = __webpack_require__(31);
 
 var PROTECTION_PREFIX = /^\)\]\}',?\n/;
 var DEFAULT_CONTENT_TYPE = {
@@ -397,10 +787,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(4);
+    adapter = __webpack_require__(10);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(4);
+    adapter = __webpack_require__(10);
   }
   return adapter;
 }
@@ -471,10 +861,10 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ }),
-/* 2 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -10725,7 +11115,7 @@ return jQuery;
 
 
 /***/ }),
-/* 3 */
+/* 9 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -10911,19 +11301,19 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 4 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
-var utils = __webpack_require__(0);
-var settle = __webpack_require__(19);
-var buildURL = __webpack_require__(22);
-var parseHeaders = __webpack_require__(28);
-var isURLSameOrigin = __webpack_require__(26);
-var createError = __webpack_require__(7);
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(21);
+var utils = __webpack_require__(6);
+var settle = __webpack_require__(23);
+var buildURL = __webpack_require__(26);
+var parseHeaders = __webpack_require__(32);
+var isURLSameOrigin = __webpack_require__(30);
+var createError = __webpack_require__(13);
+var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(25);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -11019,7 +11409,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(24);
+      var cookies = __webpack_require__(28);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -11093,10 +11483,10 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ }),
-/* 5 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11122,7 +11512,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 6 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11134,13 +11524,13 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 7 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var enhanceError = __webpack_require__(18);
+var enhanceError = __webpack_require__(22);
 
 /**
  * Create an Error with the specified message, config, error code, and response.
@@ -11158,7 +11548,7 @@ module.exports = function createError(message, config, code, response) {
 
 
 /***/ }),
-/* 8 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11176,7 +11566,7 @@ module.exports = function bind(fn, thisArg) {
 
 
 /***/ }),
-/* 9 */
+/* 15 */
 /***/ (function(module, exports) {
 
 var g;
@@ -11203,269 +11593,22 @@ module.exports = g;
 
 
 /***/ }),
-/* 10 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function($) {/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
-__webpack_require__(31);
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-Vue.component('example', __webpack_require__(34));
-
-var app = new Vue({
-	el: '#app'
-});
-
-//DECLARE ALL THE VARIABLES 
-var winner = ''; //obviously the winner after function is run
-var winnerimage = ''; //images winner
-var winnermethod = ''; //stores the score cards or whatever other results
-var acard = 0; //a-sides scorecard victories, used to determine who wins
-var bcard = 0; //b-sides scorecard victories, used to determine who wins
-var scores = []; //scores will be stored in an array
-//FUNCTION TO DETERMINE A WINNER
-function fight(a, b) {
-	//declares some variables
-	var around = 0; //# rounds rounds A wins
-	var aknockdown = 0; //# of knockdowns A scores
-	var bround = 0; //# of rounds B wins
-	var bknockdown = 0; //# of knockdowns B scores
-	//generate the random factor that will influence each fight
-	var ran = function ran() {
-		return Math.random() * 25 + 10;
-	};
-	//function to generate stats newly each round
-	function createRound(a, b) {
-		aoff = (a.power + a.speed + a.offense) * (a.stamina / 100) / 2 * ran() / 100;
-		boff = (b.power + b.speed + b.offense) * (b.stamina / 100) / 2 * ran() / 100;
-		adef = (a.defense * ran() + a.chin) / 100;
-		bdef = (b.defense * ran() + b.chin) / 100;
-		aovr = aoff + adef;
-		bovr = boff + bdef;
-	}
-	//this now sims each round and determines a winner
-	for (var i = 0; i < 12; i++) {
-		createRound(a, b);
-		if (aovr > bovr) {
-			around++;
-			if (aovr - bovr > 37) {
-				aknockdown++;
-				b.chin - 3;
-				b.defense - 3;
-				console.log(a.name + ' dropped ' + b.name);
-			}if (aovr - bovr > 45) {
-				winnermethod = a.name + ' has knocked out' + b.name;
-				winner = a.name;
-				winnerimage = a.image;
-				break;
-			}
-		} else {
-			bround++;
-			if (bovr - aovr > 37) {
-				bknockdown++;
-				a.chin - 3;
-				b.chin - 3;
-				console.log(b.name + ' dropped ' + a.name);
-			}if (bovr - aovr > 45) {
-				winnermethod = b.name + ' has knocked out ' + a.name;
-				winner = b.name;
-				winnerimage = b.image;
-				break;
-			}
-		}
-	}
-	//determines a winner
-	if (120 - bround - bknockdown > 120 - around - aknockdown) {
-		acard++;
-	} else if (120 - bround - bknockdown < 120 - around - aknockdown) {
-		bcard++;
-	} else if (120 - bround - bknockdown === 120 - around - aknockdown) {
-		acard++;
-	}
-	//push the scorecards to a variable so they can be put in the div
-	scores.push(120 - bround - bknockdown + '-' + (120 - around - aknockdown));
-}
-//the function which actually determines the winner
-function generateAWinner(a, b) {
-	for (var i = 0; i < 3; i++) {
-		fight(a, b);
-	}
-	if (acard > bcard) {
-		winner = a.name;
-		winnerimage = a.image;
-		winnermethod = scores.toString();
-	} else if (bcard > acard) {
-		winner = b.name;
-		winnerimage = b.image;
-		winnermethod = scores.toString();
-	} else {
-		winner = a.name;
-		winnerimage = a.image;
-		winnermethod = scores.toString();
-	}
-	console.log('winner ' + winner);
-	console.log('winnerimage ' + winnerimage);
-	console.log('winnermethod ' + winnermethod);
-}
-
-//determine a winner of round 1 - #1 vs #8
-$("#round1fight1").on("click", function () {
-	if (boxers) {
-		generateAWinner(boxers[1], boxers[8]);
-		$("#round2seed1image").attr("src", winnerimage);
-		console.log('i should be going to the seed 1 position in round 2');
-		document.getElementById("round2seed1name").innerHTML = winner;
-		document.getElementById("round2seed1method").innerText = winnermethod;
-		if (boxers[1]["name"] == winner) {
-			round2seed1 = boxers[1];
-		} else {
-			round2seed1 = boxers[8];
-		}
-		winnermethod = [];
-		scores = [];
-		acard = 0;
-		bcard = 0;
-	}
-	$("#round1fight1").addClass("is-disabled");
-	checkResults();
-});
-//determine a winner of round 1 - #2 vs #7
-$("#round1fight2").on("click", function () {
-	if (boxers) {
-		generateAWinner(boxers[2], boxers[7]);
-		$("#round2seed3image").attr("src", winnerimage);
-		console.log('i should be going to the seed 3 position in round 2');
-		document.getElementById("round2seed3name").innerHTML = winner;
-		document.getElementById("round2seed3method").innerText = winnermethod;
-		if (boxers[2]["name"] == winner) {
-			round2seed3 = boxers[2];
-		} else {
-			round2seed3 = boxers[7];
-		}
-		winnermethod = [];
-		scores = [];
-		acard = 0;
-		bcard = 0;
-	}
-	$("#round1fight2").addClass("is-disabled");
-	checkResults();
-});
-//determine a winner of round 1 - #3 vs #6
-$("#round1fight3").on("click", function () {
-	if (boxers) {
-		generateAWinner(boxers[3], boxers[6]);
-		$("#round2seed2image").attr("src", winnerimage);
-		console.log('i should be going to the seed 2 position in round 2');
-		document.getElementById("round2seed2name").innerHTML = winner;
-		document.getElementById("round2seed2method").innerText = winnermethod;
-		if (boxers[3]["name"] == winner) {
-			round2seed2 = boxers[3];
-		} else {
-			round2seed2 = boxers[6];
-		}
-		winnermethod = [];
-		scores = [];
-		acard = 0;
-		bcard = 0;
-	}
-	$("#round1fight3").addClass("is-disabled");
-	checkResults();
-});
-//determine a winner of roudn 1 - #4 vs #5
-$("#round1fight4").on("click", function () {
-	if (boxers) {
-		generateAWinner(boxers[4], boxers[5]);
-		$("#round2seed4image").attr("src", winnerimage);
-		console.log('i should be going to the seed 4 position in round 2');
-		document.getElementById("round2seed4name").innerHTML = winner;
-		document.getElementById("round2seed4method").innerText = winnermethod;
-		if (boxers[4]["name"] == winner) {
-			round2seed4 = boxers[4];
-		} else {
-			round2seed4 = boxers[5];
-		}
-		winnermethod = [];
-		scores = [];
-		acard = 0;
-		bcard = 0;
-	}
-	$("#round1fight4").addClass("is-disabled");
-	setTimeout(checkResults(), 2000);
-});
-
-//ROUND 2 BEGINS NOW
-//first we must add the buttons
-function checkResults() {
-	//check that all results have been generated from round 1
-	if ($("#round2seed1method").text().length > 0 && $("#round2seed2method").text().length > 0 && $("#round2seed3method").text().length > 0 && $("#round2seed4method").text().length > 0) {
-		//tells the buttons to pop up
-		$("#round2fight1").show("slow");
-		$("#round2fight2").show("slow");
-	}
-}
-
-$("#round2fight1").on("click", function () {
-	generateAWinner(round2seed1, round2seed4);
-	$("#round3seed1image").attr("src", winnerimage);
-	document.getElementById("round3seed1name").innerHTML = winner;
-	document.getElementById("round3seed1method").innerText = winnermethod;
-	if (round2seed1["name"] == winner) {
-		finalseed1 = round2seed1;
-	} else {
-		finalseed1 = round2seed1;
-	}
-	winnermethod = [];
-	scores = [];
-	acard = 0;
-	bcard = 0;
-});
-$("#round2fight2").on("click", function () {
-	generateAWinner(round2seed2, round2seed3);
-	$("#round3seed2image").attr("src", winnerimage);
-	document.getElementById("round3seed2name").innerHTML = winner;
-	document.getElementById("round3seed2method").innerText = winnermethod;
-	if (round2seed2["name"] == winner) {
-		finalseed2 = round2seed2;
-	} else {
-		finalseed2 = round2seed3;
-	}
-	winnermethod = [];
-	scores = [];
-	acard = 0;
-	bcard = 0;
-});
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+module.exports = __webpack_require__(17);
 
 /***/ }),
-/* 11 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(13);
-
-/***/ }),
-/* 13 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(0);
-var bind = __webpack_require__(8);
-var Axios = __webpack_require__(15);
-var defaults = __webpack_require__(1);
+var utils = __webpack_require__(6);
+var bind = __webpack_require__(14);
+var Axios = __webpack_require__(19);
+var defaults = __webpack_require__(7);
 
 /**
  * Create an instance of Axios
@@ -11498,15 +11641,15 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(5);
-axios.CancelToken = __webpack_require__(14);
-axios.isCancel = __webpack_require__(6);
+axios.Cancel = __webpack_require__(11);
+axios.CancelToken = __webpack_require__(18);
+axios.isCancel = __webpack_require__(12);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(29);
+axios.spread = __webpack_require__(33);
 
 module.exports = axios;
 
@@ -11515,13 +11658,13 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 14 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var Cancel = __webpack_require__(5);
+var Cancel = __webpack_require__(11);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -11579,18 +11722,18 @@ module.exports = CancelToken;
 
 
 /***/ }),
-/* 15 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var defaults = __webpack_require__(1);
-var utils = __webpack_require__(0);
-var InterceptorManager = __webpack_require__(16);
-var dispatchRequest = __webpack_require__(17);
-var isAbsoluteURL = __webpack_require__(25);
-var combineURLs = __webpack_require__(23);
+var defaults = __webpack_require__(7);
+var utils = __webpack_require__(6);
+var InterceptorManager = __webpack_require__(20);
+var dispatchRequest = __webpack_require__(21);
+var isAbsoluteURL = __webpack_require__(29);
+var combineURLs = __webpack_require__(27);
 
 /**
  * Create a new instance of Axios
@@ -11671,13 +11814,13 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 16 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(0);
+var utils = __webpack_require__(6);
 
 function InterceptorManager() {
   this.handlers = [];
@@ -11730,16 +11873,16 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
-/* 17 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(0);
-var transformData = __webpack_require__(20);
-var isCancel = __webpack_require__(6);
-var defaults = __webpack_require__(1);
+var utils = __webpack_require__(6);
+var transformData = __webpack_require__(24);
+var isCancel = __webpack_require__(12);
+var defaults = __webpack_require__(7);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -11816,7 +11959,7 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
-/* 18 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11842,13 +11985,13 @@ module.exports = function enhanceError(error, config, code, response) {
 
 
 /***/ }),
-/* 19 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var createError = __webpack_require__(7);
+var createError = __webpack_require__(13);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -11874,13 +12017,13 @@ module.exports = function settle(resolve, reject, response) {
 
 
 /***/ }),
-/* 20 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(0);
+var utils = __webpack_require__(6);
 
 /**
  * Transform the data for a request or a response
@@ -11901,7 +12044,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
-/* 21 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11944,13 +12087,13 @@ module.exports = btoa;
 
 
 /***/ }),
-/* 22 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(0);
+var utils = __webpack_require__(6);
 
 function encode(val) {
   return encodeURIComponent(val).
@@ -12019,7 +12162,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 
 /***/ }),
-/* 23 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12038,13 +12181,13 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 
 /***/ }),
-/* 24 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(0);
+var utils = __webpack_require__(6);
 
 module.exports = (
   utils.isStandardBrowserEnv() ?
@@ -12098,7 +12241,7 @@ module.exports = (
 
 
 /***/ }),
-/* 25 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12119,13 +12262,13 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
-/* 26 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(0);
+var utils = __webpack_require__(6);
 
 module.exports = (
   utils.isStandardBrowserEnv() ?
@@ -12194,13 +12337,13 @@ module.exports = (
 
 
 /***/ }),
-/* 27 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(0);
+var utils = __webpack_require__(6);
 
 module.exports = function normalizeHeaderName(headers, normalizedName) {
   utils.forEach(headers, function processHeader(value, name) {
@@ -12213,13 +12356,13 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
-/* 28 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(0);
+var utils = __webpack_require__(6);
 
 /**
  * Parse headers into an object
@@ -12257,7 +12400,7 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
-/* 29 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12291,7 +12434,7 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 30 */
+/* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12320,11 +12463,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 };
 
 /***/ }),
-/* 31 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-window._ = __webpack_require__(33);
+window._ = __webpack_require__(37);
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -12332,9 +12475,9 @@ window._ = __webpack_require__(33);
  * code may be modified to fit the specific needs of your application.
  */
 
-window.$ = window.jQuery = __webpack_require__(2);
+window.$ = window.jQuery = __webpack_require__(8);
 
-__webpack_require__(32);
+__webpack_require__(36);
 
 /**
  * Vue is a modern JavaScript library for building interactive web interfaces
@@ -12342,7 +12485,7 @@ __webpack_require__(32);
  * and simple, leaving you to focus on building your next great project.
  */
 
-window.Vue = __webpack_require__(37);
+window.Vue = __webpack_require__(41);
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -12350,7 +12493,7 @@ window.Vue = __webpack_require__(37);
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = __webpack_require__(12);
+window.axios = __webpack_require__(16);
 
 window.axios.defaults.headers.common = {
   'X-CSRF-TOKEN': window.Laravel.csrfToken,
@@ -12373,7 +12516,7 @@ window.axios.defaults.headers.common = {
 // });
 
 /***/ }),
-/* 32 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(jQuery) {/*!
@@ -14754,10 +14897,10 @@ if (typeof jQuery === 'undefined') {
 
 }(jQuery);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ }),
-/* 33 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -31846,17 +31989,17 @@ if (typeof jQuery === 'undefined') {
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(38)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15), __webpack_require__(42)(module)))
 
 /***/ }),
-/* 34 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Component = __webpack_require__(35)(
+var Component = __webpack_require__(39)(
   /* script */
-  __webpack_require__(30),
+  __webpack_require__(34),
   /* template */
-  __webpack_require__(36),
+  __webpack_require__(40),
   /* scopeId */
   null,
   /* cssModules */
@@ -31883,7 +32026,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 35 */
+/* 39 */
 /***/ (function(module, exports) {
 
 module.exports = function normalizeComponent (
@@ -31936,7 +32079,7 @@ module.exports = function normalizeComponent (
 
 
 /***/ }),
-/* 36 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -31965,7 +32108,7 @@ if (false) {
 }
 
 /***/ }),
-/* 37 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41215,10 +41358,10 @@ Vue$3.compile = compileToFunctions;
 
 module.exports = Vue$3;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(9)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(15)))
 
 /***/ }),
-/* 38 */
+/* 42 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -41243,14 +41386,6 @@ module.exports = function(module) {
 	}
 	return module;
 };
-
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(10);
-module.exports = __webpack_require__(11);
 
 
 /***/ })
