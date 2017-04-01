@@ -210,7 +210,7 @@
 			<h1 class="title">Round 3</h1>
 			<!-- START OF FINAL R3S1 vs R3S2 -->
 			<!-- R3 S1 -->
-			<div class="box">
+			<div class="box round3Box">
 				<article class="media">
 					<div class="media-left">
 						<figure class="image is-64x64">
@@ -224,7 +224,7 @@
 				</article>
 			</div>
 			<!-- R3 S2 -->
-			<div class="box">
+			<div class="box round3Box">
 				<article class="media">
 					<div class="media-left">
 						<figure class="image is-64x64">
@@ -241,7 +241,7 @@
 		</div>
 		<!-- WINNER -->
 		<div class="column is-one-quarter">
-			<div class="box">
+			<div class="box winnerBox hiddenElement">
 				<article class="media">
 					<div class="media-left">
 						<figure class="image is-64x64">

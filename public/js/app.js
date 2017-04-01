@@ -167,6 +167,7 @@ function resetVariables() {
     bknockdown = 0;
     round = 1;
 }
+
 //the function which actually determines the winner
 function generateAWinner(a, b) {
     for (var i = 0; i < 3; i++) {
@@ -210,15 +211,7 @@ $("#round1fight1").on("click", function () {
     } else {
         round2seed1 = boxers[8];
     }
-    winnermethod = [];
-    scores = [];
-    acard = 0;
-    bcard = 0;
-    aknockout = 0;
-    bknockout = 0;
-    aknockdown = 0;
-    bknockdown = 0;
-    round = 1;
+    resetVariables();
     $("#round1fight1").addClass("hiddenElement");
     checkResults();
 });
@@ -245,15 +238,7 @@ $("#round1fight2").on("click", function () {
     } else {
         round2seed2 = boxers[7];
     }
-    winnermethod = [];
-    scores = [];
-    acard = 0;
-    bcard = 0;
-    aknockout = 0;
-    bknockout = 0;
-    aknockdown = 0;
-    bknockdown = 0;
-    round = 1;
+    resetVariables();
     $("#round1fight2").addClass("hiddenElement");
     checkResults();
 });
@@ -280,15 +265,7 @@ $("#round1fight3").on("click", function () {
     } else {
         round2seed3 = boxers[6];
     }
-    winnermethod = [];
-    scores = [];
-    acard = 0;
-    bcard = 0;
-    aknockout = 0;
-    bknockout = 0;
-    aknockdown = 0;
-    bknockdown = 0;
-    round = 1;
+    resetVariables();
     $("#round1fight3").addClass("hiddenElement");
     checkResults();
 });
@@ -316,15 +293,7 @@ $("#round1fight4").on("click", function () {
     } else {
         round2seed4 = boxers[5];
     }
-    winnermethod = [];
-    scores = [];
-    acard = 0;
-    bcard = 0;
-    aknockout = 0;
-    bknockout = 0;
-    aknockdown = 0;
-    bknockdown = 0;
-    round = 1;
+    resetVariables();
     $("#round1fight4").addClass("hiddenElement");
     checkResults();
 });
@@ -335,6 +304,7 @@ function checkResults() {
     //check that all results have been generated from round 1
     if ($("#round2seed1method").text().length > 0 && $("#round2seed2method").text().length > 0 && $("#round2seed3method").text().length > 0 && $("#round2seed4method").text().length > 0) {
         //tells the buttons to pop up
+        $(".bracket-box").show("slow");
         $("#round2fight1").removeClass("hiddenElement");
         $("#round2fight2").removeClass("hiddenElement");
     }
@@ -342,7 +312,8 @@ function checkResults() {
 
 function checkForFinal() {
     if ($("#round3seed1method").text().length > 0 && $("#round3seed2method").text().length > 0) {
-        $("#finalmatch").removeClass("hiddenElement");
+        $(".round3Box").show("slow");
+        $("#finalmatch").show("slow");
     }
 }
 // 1 v 8 winner = round2seed1
@@ -356,7 +327,7 @@ $("#round2fight1").on("click", function () {
     if (aknockout >= 1) {
         $("#round3seed1image").attr("src", round2seed1.image);
         document.getElementById("round3seed1name").innerText = round2seed1.name;
-        document.getElementById("round3seed1method").innerText = round3seed1.name + ' knocked out ' + round2seed4.name + ' in round ' + round;
+        document.getElementById("round3seed1method").innerText = round2seed1.name + ' knocked out ' + round2seed4.name + ' in round ' + round;
     } else if (bknockout >= 1) {
         $("#round3seed1image").attr("src", round2seed4.image);
         document.getElementById("round3seed1name").innerText = round2seed4.name;
@@ -365,18 +336,13 @@ $("#round2fight1").on("click", function () {
         $("#round3seed1image").attr("src", winnerimage);
         document.getElementById("round3seed1name").innerHTML = winner;
         document.getElementById("round3seed1method").innerText = winnermethod;
-        if (round2seed1["name"] == winner) {
-            finalseed1 = round2seed1;
-        } else {
-            finalseed1 = round2seed4;
-        }
     }
-    winnermethod = [];
-    scores = [];
-    acard = 0;
-    bcard = 0;
-    aknockdown = 0;
-    bknockdown = 0;
+    if (round2seed1["name"] == winner) {
+        finalseed1 = round2seed1;
+    } else {
+        finalseed1 = round2seed4;
+    }
+    resetVariables();
     checkForFinal();
     $("#round2fight1").addClass("hiddenElement");
 });
@@ -394,18 +360,13 @@ $("#round2fight2").on("click", function () {
         $("#round3seed2image").attr("src", winnerimage);
         document.getElementById("round3seed2name").innerHTML = winner;
         document.getElementById("round3seed2method").innerText = winnermethod;
-        if (round2seed2["name"] == winner) {
-            finalseed2 = round2seed2;
-        } else {
-            finalseed2 = round2seed3;
-        }
     }
-    winnermethod = [];
-    scores = [];
-    acard = 0;
-    bcard = 0;
-    aknockdown = 0;
-    bknockdown = 0;
+    if (round2seed2["name"] == winner) {
+        finalseed2 = round2seed2;
+    } else {
+        finalseed2 = round2seed3;
+    }
+    resetVariables();
     checkForFinal();
     $("#round2fight2").addClass("hiddenElement");
 });
@@ -429,13 +390,8 @@ $("#finalmatch").on("click", function () {
             thewinner = finalseed2;
         }
     }
-    winnermethod = [];
-    scores = [];
-    acard = 0;
-    bcard = 0;
-    aknockdown = 0;
-    bknockdown = 0;
-    $("#finalmatch").addClass("hiddenElement");
+    resetVariables();
+    $(".winnerBox").show("slow");
 });
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 

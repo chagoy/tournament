@@ -54,11 +54,17 @@ $body-bg: transparent;
 }
 
 .bracket-box {
-	margin-top: 25%;
+	margin-top: 30%;
+	display: none;
 }
 
-.bracket-box-winner {
-	margin-top: 50%;
+.round3Box {
+	margin-top: 80%;
+	display: none;
+}
+
+.winnerBox {
+	margin-top: 160%;
 }
 
 .method {
