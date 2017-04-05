@@ -15,6 +15,8 @@ class BoxerController extends Controller
     }
     public function show(Boxer $boxer)
     {
-    	return view('boxers.show', compact('boxer'));
+        $a = [$boxer->power, $boxer->speed, $boxer->offense, $boxer->defense, $boxer->chin, $boxer->stamina];
+        $a = array_sum($a);
+    	return view('boxers.show', compact('boxer', 'a'));
     }
 }

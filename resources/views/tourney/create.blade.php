@@ -29,7 +29,7 @@
 						<div class="column">
 								@foreach ($weights as $weight)
 									<a href="/tournament/create/{{ $weight['weight'] }}">
-									<button class="button is-primary is-focused">{{ $weight['weight'] }}</button>
+									<button class="weight-button button is-primary btn">{{ $weight['weight'] }}</button>
 									</a>
 								@endforeach
 						</div>

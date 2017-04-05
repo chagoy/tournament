@@ -141,6 +141,7 @@ $("#round1fight1").on("click", function() {
         }
         resetVariables();
         $("#round1fight1").addClass("hiddenElement");
+        $(".bracket-box-1").show("slow");
         checkResults();
     })
     //determine a winner of round 1 - #2 vs #7
@@ -168,6 +169,7 @@ $("#round1fight2").on("click", function() {
         }
         resetVariables();
         $("#round1fight2").addClass("hiddenElement");
+        $(".bracket-box-2").show("slow");
         checkResults();
     })
     //determine a winner of round 1 - #3 vs #6
@@ -195,6 +197,7 @@ $("#round1fight3").on("click", function() {
     }
     resetVariables();
     $("#round1fight3").addClass("hiddenElement");
+    $(".bracket-box-3").show("slow");
     checkResults();
 })
 
@@ -223,16 +226,16 @@ $("#round1fight4").on("click", function() {
     }
     resetVariables();
     $("#round1fight4").addClass("hiddenElement");
+    $(".bracket-box-4").show("slow");
     checkResults();
 })
-
+ 
 //ROUND 2 BEGINS NOW
 //first we must add the buttons
 function checkResults() {
     //check that all results have been generated from round 1
     if ($("#round2seed1method").text().length > 0 && $("#round2seed2method").text().length > 0 && $("#round2seed3method").text().length > 0 && $("#round2seed4method").text().length > 0) {
         //tells the buttons to pop up
-        $(".bracket-box").show("slow");
         $("#round2fight1").removeClass("hiddenElement");
         $("#round2fight2").removeClass("hiddenElement");
     }
@@ -241,7 +244,6 @@ function checkResults() {
 
 function checkForFinal() {
     if ($("#round3seed1method").text().length > 0 && $("#round3seed2method").text().length > 0) {
-        $(".round3Box").show("slow");
         $("#finalmatch").show("slow");
     }
 
@@ -275,6 +277,7 @@ $("#round2fight1").on("click", function() {
     resetVariables();
     checkForFinal();
     $("#round2fight1").addClass("hiddenElement");
+    $(".round3Box-1").show("slow");
 })
 $("#round2fight2").on("click", function() {
     generateAWinner(round2seed2, round2seed3);
@@ -299,6 +302,7 @@ $("#round2fight2").on("click", function() {
     resetVariables();
     checkForFinal();
     $("#round2fight2").addClass("hiddenElement");
+    $(".round3Box-2").show("slow");
 })
 $("#finalmatch").on("click", function() {
     generateAWinner(finalseed1, finalseed2);
@@ -321,5 +325,6 @@ $("#finalmatch").on("click", function() {
         }
     }
     resetVariables();
+    $("#winnerTitle").removeClass("hiddenElement");
     $(".winnerBox").show("slow");
 })

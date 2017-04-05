@@ -36,30 +36,23 @@ body {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-    height: 500px;
+    height: auto;
     width: 100%;
     text-align: center;
 }
 $body-bg: transparent;
 
-.button-start {
-	background-color: transparent;
-	color: white;
-	border-radius: 0;
-	margin-top: 390px;
-}
-
 .stats-bar {
 	margin-top: 26px;
 }
 
-.bracket-box {
-	margin-top: 30%;
+.bracket-box-1, .bracket-box-2, .bracket-box-3, .bracket-box-4 {
+	margin-top: 45%;
 	display: none;
 }
 
-.round3Box {
-	margin-top: 80%;
+.round3Box-1, .round3Box-2 {
+	margin-top: 100%;
 	display: none;
 }
 
@@ -73,4 +66,16 @@ $body-bg: transparent;
 
 .hiddenElement {
 	display: none;
+}
+
+.weight-button {
+	margin-bottom: 6px;
+}
+
+button#round1fight1.button.is-dark, button#round1fight2.button.is-dark, button#round1fight3.button.is-dark, button#round1fight4.button.is-dark {
+	margin-bottom: 18px;
+}
+
+div.columns {
+	padding-top: 10px;
 }

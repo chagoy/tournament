@@ -9,7 +9,7 @@
 	@endforeach
 	<button type="submit" class="">Submit</button>
 </form> --}}
-
+<div class="container">
 	<form method="post" action="/tournament/create/store/">
 	{{ csrf_field() }}
 		<div class="field">
@@ -60,6 +60,7 @@
 				</span>
 			</p>
 		</div>
+
 		<div class="field">
 			<label class="label">5 seed</label>
 			<p class="control">
@@ -114,6 +115,5 @@
 		</p>
 	</div>
 	</form>
-
-
+</div>
 @endsection

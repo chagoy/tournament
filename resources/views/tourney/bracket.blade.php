@@ -146,7 +146,7 @@
 			<h1 class="title">Round 2</h1>
 			<!-- START OF R2 - 1v4 -->
 			<!-- R2 S1 -->
-			<div class="box bracket-box">
+			<div class="box bracket-box-1">
 				<article class="media">
 					<div class="media-left">
 						<figure class="image is-64x64">
@@ -160,7 +160,7 @@
 				</article>
 			</div>
 			<!-- R2 S4 -->
-			<div class="box bracket-box">
+			<div class="box bracket-box-4">
 				<article class="media">
 					<div class="media-left">
 						<figure class="image is-64x64">
@@ -176,7 +176,7 @@
 				<button id="round2fight1" class="button is-dark hiddenElement">Sim 1 vs 3</button>
 			<!-- ROUND 2 - 2v3-->
 			<!-- R2 S2 -->
-			<div class="box bracket-box">
+			<div class="box bracket-box-2">
 				<article class="media">
 					<div class="media-left">
 						<figure class="image is-64x64">
@@ -191,7 +191,7 @@
 				</article>
 			</div>
 			<!-- R2 S3 -->
-			<div class="box bracket-box">
+			<div class="box bracket-box-3">
 				<article class="media">
 					<div class="media-left">
 						<figure class="image is-64x64">
@@ -210,7 +210,7 @@
 			<h1 class="title">Round 3</h1>
 			<!-- START OF FINAL R3S1 vs R3S2 -->
 			<!-- R3 S1 -->
-			<div class="box round3Box">
+			<div class="box round3Box-1">
 				<article class="media">
 					<div class="media-left">
 						<figure class="image is-64x64">
@@ -223,8 +223,9 @@
 					</div>
 				</article>
 			</div>
+			<button id="finalmatch" class="button is-dark hiddenElement">Sim Final</button>
 			<!-- R3 S2 -->
-			<div class="box round3Box">
+			<div class="box round3Box-2">
 				<article class="media">
 					<div class="media-left">
 						<figure class="image is-64x64">
@@ -237,10 +238,10 @@
 					</div>
 				</article>
 			</div>
-				<button id="finalmatch" class="button is-dark hiddenElement">Sim Final</button>
 		</div>
 		<!-- WINNER -->
 		<div class="column is-one-quarter">
+			<h1 id="winnerTitle" class="title hiddenElement">Winner!</h1>
 			<div class="box winnerBox hiddenElement">
 				<article class="media">
 					<div class="media-left">
