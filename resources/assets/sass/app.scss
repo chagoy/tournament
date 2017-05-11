@@ -6,7 +6,29 @@
 @import "variables";
 $greytext: rgb(226, 226, 226);
 $greentext: rgb(1, 209, 178);
-// Bootstrap
+
+$phone-width: 320px;
+$tablet-width: 768px;
+$desktop-width: 1024px;
+
+@mixin phone {
+	@media(min-width: #{$phone-width}) and (max-width: #{$tablet-width - 1px}) {
+		@content;
+	}
+}
+@mixin tablet {
+	@media(min-width: #{tablet-width}) and (max-width: #{$desktop-width - 1px}) {
+		@content;
+	}
+}
+
+.image {
+	@include phone {
+		max-width: 45%;
+		float: left;
+	}
+}
+
 body {
 	font: {
 		family: Helvetica Neue;
@@ -46,6 +68,27 @@ $body-bg: transparent;
 	margin-top: 26px;
 }
 
+.box {
+	@include phone {
+		.bracket-box-1 {
+			margin-top: 10%;
+			display: none;
+		}
+		.bracket-box-2 {
+			margin-top: 10%;
+			display: none;
+		}
+		.bracket-box-3 {
+			margin-top: 10%;
+			display: none;
+		}
+		.bracket-box-4 {
+			margin-top: 10%;
+			display: none;
+		}
+	}
+}
+
 .bracket-box-1, .bracket-box-2, .bracket-box-3, .bracket-box-4 {
 	margin-top: 45%;
 	display: none;
@@ -78,4 +121,29 @@ button#round1fight1.button.is-dark, button#round1fight2.button.is-dark, button#r
 
 div.columns {
 	padding-top: 10px;
+}
+
+button.button.is-dark.btn {
+	margin-right: -5px;
+	margin-left: -5px;
+}
+.weight-selection {
+	text-align: center;
+}
+
+span.select.1v1 {
+	display: inline;
+}
+
+p.control.1v1 {
+	display: inline;
+}
+
+h1.title.1v1 {
+	display: inline;
+}
+
+div.field.1v1 {
+	display: inline;
+	background-color: red;
 }

@@ -11,9 +11,20 @@ require('./bootstrap');
  */
 Vue.component('example', require('./components/Example.vue'));
 
-const app = new Vue({
-    el: '#app'
-});
+new Vue({
+
+    el: '#app',
+
+    mounted() {
+
+    }
+
+})
+
+$("#weightPicker").on("click", function() {
+    var weightLink = $("#weightWatcher").val();
+    window.location = "/1v1/" + weightLink;
+})
 
 //DECLARE ALL THE VARIABLES 
 var winner = ''; //obviously the winner after function is run
@@ -27,6 +38,7 @@ var bknockdown = 0; //# of knockdowns B scores
 var aknockout = 0; //determines if there is a KO
 var bknockout = 0; //determines if there is a KO
 var round = 1;
+var scorecard = '';
 //FUNCTION TO DETERMINE A WINNER
 function fight(a, b) {
     //declares some variables
@@ -94,6 +106,7 @@ function resetVariables() {
     aknockdown = 0;
     bknockdown = 0;
     round = 1;
+    scorecard = '';
 }
 
 //the function which actually determines the winner
@@ -104,18 +117,24 @@ function generateAWinner(a, b) {
     if (acard > bcard) {
         winner = a.name;
         winnerimage = a.image;
-        winnermethod = scores.toString();
+        winnermethod = cleanScore(scores);
     } else if (bcard > acard) {
         winner = b.name;
         winnerimage = b.image;
-        winnermethod = scores.toString();
+        winnermethod = cleanScore(scores);
     } else {
         winner = a.name;
         winnerimage = a.image;
-        winnermethod = scores.toString();
+        winnermethod = cleanScore(scores);
     }
 }
 
+function cleanScore(a) {
+    a.forEach(function(el) {
+        scorecard += el + ' ';
+    })
+    return scorecard;
+}
 //determine a winner of round 1 - #1 vs #8
 $("#round1fight1").on("click", function() {
         if (boxers) {
@@ -328,3 +347,4 @@ $("#finalmatch").on("click", function() {
     $("#winnerTitle").removeClass("hiddenElement");
     $(".winnerBox").show("slow");
 })
+

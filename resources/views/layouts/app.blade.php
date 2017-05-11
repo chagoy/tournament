@@ -31,6 +31,8 @@
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.0/axios.min.js">
+    </script>
     <script> 
             @if ( isset($boxer))
             if (window.location.pathname == '/tournament/create/store/') {

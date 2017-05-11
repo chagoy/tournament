@@ -1,3 +1,4 @@
+
 <nav class="nav">
             <div class="nav-left">
                 <a class="nav-item">
@@ -23,6 +24,7 @@
                         <a class="nav-item" href="/home">Home</a>
                         <a class="nav-item" href="/boxers">Boxers</a>
                         <a class="nav-item" href="/tournament">Start Tournament</a>
+                        <a class="nav-item" href="/1v1">1 v 1</a>
                         <a class="nav-item" href="/logout">Logout</a>
                     @else
                         <a class="nav-item" href="/register">Register</a>

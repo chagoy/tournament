@@ -10,14 +10,14 @@
 		<th>Age</th>
 		<th><abbr title="Weight">WT</abbr></th>
 		<th><abbr title="Country">HOME</abbr></th>
-		<th><abbr title="Popularity">POP</abbr></th>
-		<th><abbr title="Power">POW</abbr></th>
-		<th><abbr title="Speed">SPD</abbr></th>
-		<th><abbr title="Defense">DEF</abbr></th>
-		<th><abbr title="Offense">OFF</abbr></th>
-		<th><abbr title="Chin">CHN</abbr></th>
-		<th><abbr title="Stamina">STM</abbr></th>
-		<th><abbr title="Potential">POT</abbr></th>
+		<th><abbr title="Popularity"><a href="/boxers/by/popularity">POP</a></abbr></th>
+		<th><abbr title="Power"><a href="/boxers/by/power">POW</a></abbr></th>
+		<th><abbr title="Speed"><a href="/boxers/by/speed">SPD</a></abbr></th>
+		<th><abbr title="Defense"><a href="/boxers/by/defense">DEF</a></abbr></th>
+		<th><abbr title="Offense"><a href="/boxers/by/offense">OFF</a></abbr></th>
+		<th><abbr title="Chin"><a href="/boxers/by/chin">CHN</a></abbr></th>
+		<th><abbr title="Stamina"><a href="/boxers/by/stamina">STM</a></abbr></th>
+		<th><abbr title="Potential"><a href="/boxers/by/potential">POT</a></abbr></th>
 	</tr>
 	</thead>
 	<tbody>
